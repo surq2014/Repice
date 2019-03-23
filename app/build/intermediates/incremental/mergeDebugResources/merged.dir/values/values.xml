@@ -153,7 +153,7 @@
     <color name="button_material_light">#ffd6d7d7</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorPrimary">#FFCC33</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimaryDark">#B38ACB3F</color>
     <color name="dim_foreground_disabled_material_dark">#80bebebe</color>
     <color name="dim_foreground_disabled_material_light">#80323232</color>
     <color name="dim_foreground_material_dark">#ffbebebe</color>

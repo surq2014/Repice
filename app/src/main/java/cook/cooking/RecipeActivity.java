@@ -11,30 +11,40 @@ import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 import com.squareup.picasso.Picasso;
 
-public class RecipeActivity extends AppCompatActivity {
+public class RecipeActivity extends YouTubeBaseActivity {
+
+    YouTubePlayerView mYouTubePlayerView;
+    YouTubePlayer.OnInitializedListener mOnInitializedListener;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //Задаем внешний вид интерфейса
         setContentView(R.layout.watch_recipe);
         //Добавляем размещение элементов
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
 
-        Intent intent = getIntent();
+        mYouTubePlayerView = (YouTubePlayerView) findViewById(R.id.youtubePlay);
+
+        final Intent intent = getIntent();
         //Получаем нужные данные
         String name = intent.getStringExtra("name");
         String description = intent.getStringExtra("description");
         String recipes = intent.getStringExtra("recipes");
         String image = intent.getStringExtra("image");
 
-        if (actionBar != null) {
-            actionBar.setTitle(name);
-        }
+//        if (actionBar != null) {
+//            actionBar.setTitle(name);
+//        }
 
         TextView nameTextView = (TextView) findViewById(R.id.nameTextView);
         TextView descriptionTextView = (TextView) findViewById(R.id.descriptionTextView);
@@ -46,16 +56,18 @@ public class RecipeActivity extends AppCompatActivity {
         recipesTextView.setText(recipes);
         Picasso.get().load(image).into(imageView);
 
-        //Видеозапись
-        VideoView videoView = (VideoView) findViewById(R.id.videoView);
-        String uriPath = intent.getStringExtra("url");
-        Uri uri = Uri.parse(uriPath);
-        videoView.setVideoURI(uri);
-        videoView.requestFocus();
-        videoView.start();
+        mOnInitializedListener = new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                String urlPath = intent.getStringExtra("url");
+                youTubePlayer.loadVideo(urlPath);
+            }
 
-        //Добавление управления видеозаписью
-        MediaController mediaController = new MediaController(this);
-        videoView.setMediaController(mediaController);
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+            }
+        };
+        mYouTubePlayerView.initialize(YouTubeConfig.getApiKey(), mOnInitializedListener);
+
     }
 }

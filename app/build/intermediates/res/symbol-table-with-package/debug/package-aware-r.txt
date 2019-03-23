@@ -699,6 +699,7 @@ id chronometer
 id clip_horizontal
 id clip_vertical
 id collapseActionView
+id constraintLayout
 id content
 id contentPanel
 id custom
@@ -810,10 +811,11 @@ id topPanel
 id uniform
 id up
 id useLogo
-id videoView
+id view
 id withText
 id wrap
 id wrap_content
+id youtubePlay
 integer abc_config_activityDefaultDur
 integer abc_config_activityShortDur
 integer cancel_button_image_alpha
